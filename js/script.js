@@ -1,24 +1,4 @@
 var request = new XMLHttpRequest();
-var routes = {
-  'home': {
-    url: '/',
-    viewURL: 'templates/main.html',
-    controller: HomeController,
-    title: 'Главная'
-  },
-  'info': {
-    url: '/info',
-    viewURL: 'templates/information.html',
-    controller: InfoController,
-    title: 'Информация'
-  },
-  'profile': {
-    url: '/profile',
-    viewURL: 'templates/profile.html',
-    controller: ProfileController,
-    title: 'Профиль'
-  }
-};
 
 window.onload = function() {
   var links = document.querySelectorAll('a');
@@ -61,13 +41,18 @@ function loadPage(url) {
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       document.getElementById('content').innerHTML = request.responseText;
+      if (url === '/profile') {
+        profileRequest();
+      }
     }
   };
 
   request.send();
-if (url !== location.pathname) {
-  window.history.pushState(null, null, url);
-}
+
+  
+  if (url !== location.pathname) {
+    window.history.pushState(null, null, url);
+  }
   route.controller();
 }
 

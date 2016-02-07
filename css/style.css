@@ -23,7 +23,7 @@ h1 {
   line-height: 1.6em;
 }
 
-.menu, #container {
+.menu, #container, .user {
   display: block;
   width: 800px;
   margin: 0 auto;
