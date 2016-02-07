@@ -20,21 +20,6 @@ var routes = {
   }
 };
 
-function HomeController() {
-  document.title = routes.home.title;
-  console.log('home controller');
-}
-
-function InfoController() {
-  document.title = routes.info.title;
-  console.log('info controller');
-}
-
-function ProfileController() {
-  document.title = routes.profile.title;
-  console.log('profile controller');
-}
-
 window.onload = function() {
   var links = document.querySelectorAll('a');
 
@@ -80,8 +65,9 @@ function loadPage(url) {
   };
 
   request.send();
-
+if (url !== location.pathname) {
   window.history.pushState(null, null, url);
+}
   route.controller();
 }
 
