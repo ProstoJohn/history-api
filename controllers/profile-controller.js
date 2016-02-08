@@ -4,8 +4,10 @@ function ProfileController() {
 
 function profileRequest() {
   var xhr = new XMLHttpRequest();
-  var userName = routes.profile.title;
+  var preloaderElm = document.getElementById('page-preloader');
 
+  preloaderElm.style.display = 'block';
+  
   xhr.open('GET', 'https://api.github.com/users/mojombo');
   xhr.send();
   xhr.onreadystatechange = function () { // (3)
@@ -18,7 +20,9 @@ function profileRequest() {
       data.email = 'Не указан пользователем';
     }
 
-    divUser.innerHTML = "<div class='user anim bslide'>Логин: <a href='" + data.html_url + "' target='_blank'>@" + data.login + "</a> <img id='userimg' src='" + data.avatar_url + "' width='80'> <br> Email: " + data.email + "</div><br>";
+    divUser.innerHTML = "<div class='user anim bslide'><span class='crimson'>Логин: </span><a href='" + data.html_url + "' target='_blank'>@" + data.login + "</a> <img id='userimg' src='" + data.avatar_url + "' width='80'> <br> <span class='crimson'>Email: </span>" + data.email + "</div><br>";
     document.getElementById('profile').appendChild(divUser);
+    
+    preloaderElm.style.display = 'none';
   }
 }

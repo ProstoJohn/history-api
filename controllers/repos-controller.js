@@ -4,8 +4,11 @@ function reposController() {
 
 function reposRequest() {
   var xhr = new XMLHttpRequest();
+  var preloaderElm = document.getElementById('page-preloader');
   var divProfile = document.createElement('div');
   var reposList = '<ul>';
+
+  preloaderElm.style.display = 'block';
 
   xhr.open('GET', 'https://api.github.com/users/mojombo/repos');
   xhr.send();
@@ -17,8 +20,11 @@ function reposRequest() {
     for (var i = 0; i < reposInfo.length; i++) {
       reposList += '<li class="reposElement anim bslide">' + reposInfo[i].name + '</li>';
     }
+
     reposList += '</ul>';
     divProfile.innerHTML = reposList;
     document.getElementById('repos').appendChild(divProfile);
+
+    preloaderElm.style.display = 'none';
   }
 }
