@@ -1,6 +1,6 @@
 var request = new XMLHttpRequest();
 
-window.onload = function() {
+window.onload = function () {
   var links = document.querySelectorAll('a');
 
   for (var i = 0, length = links.length; i < length; i++) {
@@ -38,18 +38,23 @@ function loadPage(url) {
 
   request.open('GET', templateURl, true);
 
-  request.onload = function() {
+  request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
       document.getElementById('content').innerHTML = request.responseText;
+      
       if (url === '/profile') {
         profileRequest();
+      }
+      
+      if (url === '/repos') {
+        reposRequest();
       }
     }
   };
 
   request.send();
 
-  
+
   if (url !== location.pathname) {
     window.history.pushState(null, null, url);
   }
@@ -63,6 +68,6 @@ function handlerClickLink(e) {
   loadPage(href)
 }
 
-window.addEventListener('popstate', function() {
+window.addEventListener('popstate', function () {
   loadPage(location.pathname);
 });
