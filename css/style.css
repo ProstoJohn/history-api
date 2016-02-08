@@ -37,7 +37,7 @@ h1 {
   font-size: 2.4em;
   line-height: 1.55em;
   margin-bottom: 4px;
-  color: #888;
+  color: #34495e;
   text-align: center
 }
 .reposElement {
@@ -56,8 +56,14 @@ h1 {
   font-size: 2.4em;
   line-height: 1.55em;
   margin-bottom: 4px;
-  color: #888;
+  color: #c0392b;
   text-align: center
+}
+.user a {
+  color: #3498db !important;
+}
+.user a:visited {
+  color: #2980b9 !important;
 }
 #userimg {
   -moz-border-radius: 50%;
