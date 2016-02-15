@@ -1,5 +1,3 @@
-var request = new XMLHttpRequest();
-
 window.onload = function () {
   var links = document.querySelectorAll('a');
 
@@ -36,29 +34,19 @@ function loadPage(url) {
     templateURl = route.viewURL;
   }
 
-  request.open('GET', templateURl, true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      document.getElementById('content').innerHTML = request.responseText;
+  RequestAPI.get(templateURl, function (body, xhr) {
+    if (xhr.status >= 200 && xhr.status < 400) {
+      document.getElementById('content').innerHTML = body;
       
-      if (url === '/profile') {
-        profileRequest();
-      }
-      
-      if (url === '/repos') {
-        reposRequest();
-      }
+      route.controller();
     }
-  };
-
-  request.send();
-
+    
+  });
 
   if (url !== location.pathname) {
     window.history.pushState(null, null, url);
   }
-  route.controller();
+  
 }
 
 function handlerClickLink(e) {

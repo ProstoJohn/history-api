@@ -1,5 +1,7 @@
 function reposController() {
   document.title = routes.repos.title;
+
+  reposRequest();
 };
 
 function reposRequest() {
