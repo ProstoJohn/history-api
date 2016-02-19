@@ -1,39 +1,39 @@
 var RequestAPI = (function () {
-	
-	var sendRequest = function (method, uri, callback) {
-		var xhr = new XMLHttpRequest();
-		var data;
 
-	  xhr.open(method, uri);
-	  xhr.send();
+  var sendRequest = function (method, uri, callback) {
+    var xhr = new XMLHttpRequest();
+    var data;
 
-	  xhr.onreadystatechange = function () {
-	    if (xhr.readyState !== 4) return;
+    xhr.open(method, uri);
+    xhr.send();
 
-	    try {
-	    	data = JSON.parse(xhr.responseText);
-	    } catch (error) {
-	    	console.log(error);
-	    	data = xhr.responseText;
-	    }
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
 
-	    callback(data, xhr);
-	  };
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch (error) {
+        console.log(error);
+        data = xhr.responseText;
+      }
 
-	};
+      callback(data, xhr);
+    };
 
-	return {
+  };
 
-		get: function (uri, callback) {
-			sendRequest('GET', uri, callback);
-		},
+  return {
 
-		post: function (uri, callback) {
-			sendRequest('POST', uri, callback);
-		},
+    get: function (uri, callback) {
+      sendRequest('GET', uri, callback);
+    },
 
-		send: sendRequest
+    post: function (uri, callback) {
+      sendRequest('POST', uri, callback);
+    },
 
-	}
+    send: sendRequest
+
+  }
 
 })();

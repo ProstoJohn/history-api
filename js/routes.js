@@ -22,5 +22,11 @@ var routes = {
     viewURL: 'templates/repos.html',
     controller: reposController,
     title: 'Репозитории'
+  },
+  'list': {
+    url: '/list',
+    viewURL: 'templates/list.html',
+    controller: listController,
+    title: 'Список пользователей'
   }
 };

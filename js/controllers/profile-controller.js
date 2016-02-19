@@ -16,10 +16,21 @@ function profileRequest() {
       data.email = 'Не указан пользователем';
     }
 
-    divUser.innerHTML = "<div class='user anim bslide'><span class='crimson'>Логин: </span><a href='" + data.html_url + "' target='_blank'>@" + data.login + "</a> <img id='userimg' src='" + data.avatar_url + "' width='80'> <br> <span class='crimson'>Email: </span>" + data.email + "</div><br>";
-    document.getElementById('profile').appendChild(divUser);
-    
-    Preloader.hide();  
-  });
-  
+    var uri = 'templates/html/profile.html';
+
+    RequestAPI.get(uri, function (dataM, xhr) {
+
+      var rendered = Mustache.render(dataM, {
+        html_url: data.html_url,
+        avatar_url: data.avatar_url,
+        email: data.email,
+        login: data.login
+      });
+
+      divUser.innerHTML = rendered;
+      document.getElementById('profile').appendChild(divUser);
+
+      Preloader.hide();
+    })
+  })
 }

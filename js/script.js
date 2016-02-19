@@ -37,16 +37,16 @@ function loadPage(url) {
   RequestAPI.get(templateURl, function (body, xhr) {
     if (xhr.status >= 200 && xhr.status < 400) {
       document.getElementById('content').innerHTML = body;
-      
+
       route.controller();
     }
-    
+
   });
 
   if (url !== location.pathname) {
     window.history.pushState(null, null, url);
   }
-  
+
 }
 
 function handlerClickLink(e) {
