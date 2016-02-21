@@ -10,16 +10,14 @@ function profileRequest() {
   Preloader.show();
 
   RequestAPI.get(uri, function (data, xhr) {
-    var divUser = document.createElement('div');
-
+    var uri = 'templates/html/profile.html';
+    
     if (data.email == null) {
       data.email = 'Не указан пользователем';
     }
 
-    var uri = 'templates/html/profile.html';
-
     RequestAPI.get(uri, function (dataM, xhr) {
-
+      var divUser = document.createElement('div');
       var rendered = Mustache.render(dataM, {
         html_url: data.html_url,
         avatar_url: data.avatar_url,
