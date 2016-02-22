@@ -1,17 +1,24 @@
-function ProfileController() {
+function ProfileController(userInfo) {
   document.title = routes.profile.title;
 
-  profileRequest();
+  profileRequest(userInfo);
 }
 
-function profileRequest() {
-  var uri = 'https://api.github.com/users/mojombo';
+function profileRequest(info) {
+  var hash = location.hash.substring(1);
+
+  if (hash === '') {
+    alert('Имя пользователя не получено, возвращаемся к списку пользователей...')
+    window.location = "/list";
+  } else {
+    var uri = 'https://api.github.com/users/' + hash;
+  }
 
   Preloader.show();
 
   RequestAPI.get(uri, function (data, xhr) {
     var uri = 'templates/html/profile.html';
-    
+
     if (data.email == null) {
       data.email = 'Не указан пользователем';
     }
