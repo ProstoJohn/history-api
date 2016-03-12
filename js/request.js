@@ -13,7 +13,6 @@ var RequestAPI = (function () {
       try {
         data = JSON.parse(xhr.responseText);
       } catch (error) {
-        console.log(error);
         data = xhr.responseText;
       }
 
@@ -34,6 +33,6 @@ var RequestAPI = (function () {
 
     send: sendRequest
 
-  }
+  };
 
 })();

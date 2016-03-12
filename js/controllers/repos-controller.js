@@ -1,61 +1,27 @@
 function reposController() {
   document.title = routes.repos.title;
-
   reposRequest();
-};
+}
 
 function reposRequest() {
-  var xhr = new XMLHttpRequest();
-  var preloaderElm = document.getElementById('page-preloader');
+    var hashUserName = getUrlVars()["userName"];
+    var uri = 'https://api.github.com/users/' + hashUserName + '/repos';
+
   var divProfile = document.createElement('div');
-  var reposList = '<ul>';
+  var reposList = '<div>';
 
-  preloaderElm.style.display = 'block';
+  Preloader.show();
 
-  xhr.open('GET', 'https://api.github.com/users/mojombo/repos');
-  xhr.send();
-  xhr.onreadystatechange = function () { // (3)
-    if (xhr.readyState != 4) return;
+  RequestAPI.get(uri, function (data, xhr) {
 
-    var reposInfo = JSON.parse(xhr.responseText);
-
-    for (var i = 0; i < reposInfo.length; i++) {
-      reposList += '<li class="reposElement anim bslide">' + reposInfo[i].name + '</li>';
+    for (var i = 0; i < data.length; i++) {
+      reposList += '<a href="/reposinfo?userName='+ hashUserName + '&repository=' + data[i].name + '" id="reposList" class="buttonRep">' + data[i].name + '</a><br><br>';
     }
 
-    reposList += '</ul>';
+    reposList += '</div>';
     divProfile.innerHTML = reposList;
     document.getElementById('repos').appendChild(divProfile);
 
-    preloaderElm.style.display = 'none';
-  }
+    Preloader.hide();
+  });
 }
-
-//in dev
-//
-//function reposController() {
-//  document.title = routes.repos.title;
-//
-//  reposRequest();
-//};
-//
-//function reposRequest() {
-//  var uri = 'https://api.github.com/users/mojombo';
-//
-//  RequestAPI.get(uri, function (data, xhr) {
-//    var divProfile = document.createElement('div');
-//    var reposList = '<ul>';
-//
-//    Preloader.show();
-//
-//    for (var i = 0; i < data.length; i++) {
-//      reposList += '<li class="reposElement anim bslide">' + data[i].name + '</li>';
-//    }
-//
-//    reposList += '</ul>';
-//    divProfile.innerHTML = reposList;
-//    document.getElementById('repos').appendChild(divProfile);
-//
-//    Preloader.hide();
-//  });
-//}

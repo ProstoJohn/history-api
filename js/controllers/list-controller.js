@@ -1,57 +1,89 @@
 function listController() {
-  document.title = routes.list.title;
-  usersList();
+	document.title = routes.list.title;
+	usersList();
 }
 
 function usersList() {
-  var preloaderElm = document.getElementById('page-preloader');
-  var uri = 'https://api.github.com/users' + '?since=0';
+	var preloaderElm = document.getElementById('page-preloader');
+	var uri = 'https://api.github.com/users' + '?since=0';
 
-  preloaderElm.style.display = 'block';
+	preloaderElm.style.display = 'block';
 
-  //  var requestValue = prompt("Сколько пользователей вам необходимо получить?");
-  //  if (requestValue == 0 || requestValue > 30) {
-  //    alert("Количество запросов не может быть равно 0 и быть больше 30");
-  //    location.reload();
-  //  }
+	RequestAPI.get(uri, function (data, xhr) {
+		var loadedUsers = 0;
+		var response = '';
 
-  RequestAPI.get(uri, function (data, xhr) {
-    var APIData = JSON.parse(xhr.responseText);
+		var loadUsers = function (user, callback) {
+			var limitUsers = 10;
 
-    for (var i = 0; i < 3; i++) {
-      getUser(APIData[i]);
-    }
-    preloaderElm.style.display = 'none';
+			getUser(user, function (userHTML) {
+				loadedUsers++;
+				response += userHTML;
 
-  });
+				if (loadedUsers === limitUsers) {
+					return callback(response);
+				}
+
+				loadUsers(data[loadedUsers], callback);
+			});
+
+		};
+
+		loadUsers(data[0], function (html) {
+			document.getElementById('listusers').innerHTML = html;
+
+			console.log('hide preloader');
+			preloaderElm.style.display = 'none';
+		});
+
+
+	});
 
 }
 
-function getUser(usersList) {
+function getUser(usersList, callback) {
 
-  var uri = 'https://api.github.com/users/' + usersList.login;
-  var divList = document.createElement('div');
+	var uri = 'https://api.github.com/users/' + usersList.login;
 
-  RequestAPI.get(uri, function (data, xhr) {
+	if (usersList === undefined) {
+		var check = confirm('У вас проблемы с сетевым подключением... \n\n Перезагрузить сраницу?');
+	}
 
-    var data = JSON.parse(xhr.responseText);
+	if (check == true) {
+		window.location.reload();
+	}
 
-    usersList.email = data.email ? data.email : 'Не указан пользователем';
-    usersList.name = data.name ? data.name : 'Не указан пользователем';
+	RequestAPI.get(uri, function (data, xhr) {
 
-    var uri = 'templates/html/users-list.html';
+		usersList.email = data.email ? data.email : 'Не указан пользователем';
+		usersList.name = data.name ? data.name : 'Не указан пользователем';
 
-    RequestAPI.get(uri, function (dataM, xhr) {
-      var rendered = Mustache.render(dataM, {
-        json: JSON.stringify(usersList),
-        userUrl: usersList.html_url,
-        userName: usersList.login,
-        userImgUrl: usersList.avatar_url,
-        userEmail: usersList.email
-      });
+		var uri = 'templates/mustache/users-list.html';
 
-      divList.innerHTML = rendered;
-      document.getElementById('listusers').appendChild(divList);
-    });
-  });
+		RequestAPI.get(uri, function (dataM, xhr) {
+			var rendered = Mustache.render(dataM, {
+				json: JSON.stringify(usersList),
+				userUrl: usersList.html_url,
+				userName: usersList.login,
+				userImgUrl: usersList.avatar_url,
+				userEmail: usersList.email
+			});
+			console.log('user loaded');
+			callback(rendered);
+		});
+	});
 }
+
+
+function getValidation(callback) {	
+	setTimeout(function () {
+		callback(true);
+	}, 2000);
+	console.log('end getValidation');
+}
+
+function saveResultValidation (isValid) {
+	console.log(true)
+}
+
+getValidation(saveResultValidation);
